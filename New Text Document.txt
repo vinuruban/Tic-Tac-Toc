@@ -1,0 +1,87 @@
+//Navigate to https://reactjs.org/tutorial/tutorial.html#overview   &   https://codepen.io/gaearon/pen/oWWQNa?editors=0010
+
+// when states are changed, they are automatically passed down to their children. However, they aren't upto their parents. Parents will have to specify this, e.g. in Board comp., change "<Square />" to "<Square value={i} />" for the prop, value, to be passed down.  
+
+
+//2nd child - specific to the content in one tile
+class Square extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: null,
+    }
+  }
+  
+  render() {
+    return (
+      <button 
+        className="square" 
+        onClick = {() =>
+        // {
+        //   this.state.value === null ?
+        //     this.setState({value: 'X'})
+        //   :
+        //     this.setState({value: null})
+        // }}
+        this.setState({value: 'X'})}
+        > 
+        {this.state.value}
+      </button>
+    );
+  }
+}
+
+//1st child - the tiles are made here 
+class Board extends React.Component {
+  renderSquare(i) {
+    return <Square value={i} />; //square comp. is passed up in here
+  }
+
+  render() {
+    const status = 'Next player: X';
+    return (
+      <div>
+        <div className="status">{status}</div>
+        <div className="board-row">
+          {this.renderSquare(0)}
+          {this.renderSquare(1)}
+          {this.renderSquare(2)}
+        </div>
+        <div className="board-row">
+          {this.renderSquare(3)}
+          {this.renderSquare(4)}
+          {this.renderSquare(5)}
+        </div>
+        <div className="board-row">
+          {this.renderSquare(6)}
+          {this.renderSquare(7)}
+          {this.renderSquare(8)}
+        </div>
+      </div>
+    );
+  }
+}
+
+//Parent - the logic of the game is here
+class Game extends React.Component {
+  render() {
+    return (
+      <div className="game">
+        <div className="game-board">
+          <Board />
+        </div> 
+        <div className="game-info">
+          <div>{/* status */}</div>
+          <ol>{/* TODO */}</ol>
+        </div>
+      </div>
+    ); //board comp. is passed up in here
+  }
+}
+
+// ========================================
+
+ReactDOM.render(
+  <Game />,
+  document.getElementById('root')
+);
