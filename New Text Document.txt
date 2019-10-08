@@ -26,7 +26,8 @@
 // }
 
 
-//No need to create Square as a comp. as it only contains a render method, so we'll change it to a function instead. 
+//No need to create Square as a comp. as it only contains a render method, so we'll change it to a function instead.
+//NOTE: no arrow functions needed in a basic functions. Arrow function is only used when creating a function within a component!!! 
 function Square(props) {
   return (
     <button className="square" onClick={props.onClick}>
