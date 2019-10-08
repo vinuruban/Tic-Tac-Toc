@@ -77,8 +77,26 @@ class Board extends React.Component {
   }
   
   render() {
-    const status = 'Next player: ' +
-          (this.state.xIsNext ? 'X' : 'O');
+    // const status = 'Next player: ' +
+    //       (this.state.xIsNext ? 'X' : 'O');
+    
+    
+    // const status will keep the status as constant, whereas let will declare the status as a variable!!!!
+    
+        const winner = calculateWinner(this.state.squares);
+    
+    //METHOD 1 BELOW
+    //     const winner = calculateWinner(this.state.squares);
+    // let status;
+    // if (winner) {
+    //   status = 'Winner: ' + winner;
+    // } else {
+    //   status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+    // }
+    
+    //METHOD 2, my method,  BELOW
+    const status = (winner ? 'Winner ' + winner : 'Next player: ' + (this.state.xIsNext ? 'X' : 'O'));
+    
     
     return (
       <div>
@@ -126,3 +144,26 @@ ReactDOM.render(
   <Game />,
   document.getElementById('root')
 );
+
+
+
+
+function calculateWinner(squares) {
+  const lines = [
+    [0, 1, 2], //first row
+    [3, 4, 5], //second row
+    [6, 7, 8], //third row
+    [0, 3, 6], //first column
+    [1, 4, 7], //second column
+    [2, 5, 8], //third column
+    [0, 4, 8], //diagonal: topLeft to bottomRight
+    [2, 4, 6], //diagonal: topRight to bottomLeft
+  ];
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
+    }
+  }
+  return null;
+}
