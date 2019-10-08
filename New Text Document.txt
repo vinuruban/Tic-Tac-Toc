@@ -3,42 +3,83 @@
 // when states are changed, they are automatically passed down to their children. However, they aren't upto their parents. Parents will have to specify this, e.g. in Board comp., change "<Square />" to "<Square value={i} />" for the prop, value, to be passed down.  
 
 
-//2nd child - specific to the content in one tile
-class Square extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: null,
-    }
-  }
-  
-  render() {
-    return (
-      <button 
-        className="square" 
-        onClick = {() =>
-        // {
-        //   this.state.value === null ?
-        //     this.setState({value: 'X'})
-        //   :
-        //     this.setState({value: null})
-        // }}
-        this.setState({value: 'X'})}
-        > 
-        {this.state.value}
-      </button>
-    );
-  }
+////2nd child - specific to the content in one tile
+// class Square extends React.Component {  
+//   render() {
+//     return (
+//       <button 
+//         className="square" 
+//         onClick = {() =>
+        //// {
+        ////   this.state.value === null ?
+        ////     this.setState({value: 'X'})
+        ////   :
+        ////     this.setState({value: null})
+        //// }}
+        // this.props.onClick()}
+        //// the above tells React to set up a click event listener. When the button is clicked, React will call the onClick event handler that is defined in Square’s render() method.
+      //   > 
+      //   {this.props.sym}
+      // </button>
+//     );
+//   }
+// }
+
+
+//No need to create Square as a comp. as it only contains a render method, so we'll change it to a function instead. 
+function Square(props) {
+  return (
+    <button className="square" onClick={props.onClick}>
+      {props.sym}
+    </button>
+  );
 }
 
 //1st child - the tiles are made here 
 class Board extends React.Component {
-  renderSquare(i) {
-    return <Square value={i} />; //square comp. is passed up in here
+    constructor(props) {
+    super(props);
+    this.state = {
+      squares: Array(9).fill(null), 
+      // creates 3x3 tiles with null in each tile
+      xIsNext: true,
+    };
   }
-
+  
+  //this function writes the X or O when square is clicked
+  vinuClick(i) {
+    const squarezz =
+          this.state.squares.slice();
+    squarezz[i] = this.state.xIsNext ? 'X': 'O';
+    this.setState({
+      squares: squarezz,
+      xIsNext : !this.state.xIsNext,    
+    });
+    //note that the states squares and xIsNext changes here - xIsNext loops btwn true to false when ever a square is clicked
+    
+    //The slice() method returns a shallow copy of a portion of an array into a new array object selected from begin to end (end not included) where begin and end represent the index of items in that array. The original array will not be modified.
+  }
+  
+  // i loops from 0 to 8 - when <button...>{this.props.sym}</button> is coded in the button of the square component, each of the tile will display numbers in order from 0 to 8
+  
+  // renderSquare(i) { 
+  //   return <Square sym={i} />;
+  // }
+    
+  //square comp. is passed down in here. renderSquare creates/displays the square button.
+  renderSquare(i) { 
+    return <Square sym = 
+             {this.state.squares[i]}
+             onClick={() =>
+       this.vinuClick(i)
+             }
+            />;
+  }
+  
   render() {
-    const status = 'Next player: X';
+    const status = 'Next player: ' +
+          (this.state.xIsNext ? 'X' : 'O');
+    
     return (
       <div>
         <div className="status">{status}</div>
@@ -68,7 +109,7 @@ class Game extends React.Component {
     return (
       <div className="game">
         <div className="game-board">
-          <Board />
+          <Board />;
         </div> 
         <div className="game-info">
           <div>{/* status */}</div>
