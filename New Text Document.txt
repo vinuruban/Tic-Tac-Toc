@@ -26,8 +26,7 @@
 // }
 
 
-//No need to create Square as a comp. as it only contains a render method, so we'll change it to a function instead.
-//NOTE: no arrow functions needed in a basic functions. Arrow function is only used when creating a function within a component!!! 
+//No need to create Square as a comp. as it only contains a render method, so we'll change it to a function instead. Also {this.props.. changes to {props
 function Square(props) {
   return (
     <button className="square" onClick={props.onClick}>
@@ -36,13 +35,13 @@ function Square(props) {
   );
 }
 
-//1st child - the tiles are made here 
+//1st child - the tiles are made here - the logic of the game is here
 class Board extends React.Component {
     constructor(props) {
     super(props);
     this.state = {
       squares: Array(9).fill(null), 
-      // creates 3x3 tiles with null in each tile
+      // fill the 3x3 tiles with null in each tile
       xIsNext: true,
     };
   }
@@ -57,6 +56,8 @@ class Board extends React.Component {
       xIsNext : !this.state.xIsNext,    
     });
     //note that the states squares and xIsNext changes here - xIsNext loops btwn true to false when ever a square is clicked
+    
+    //slice() creates a new copy of the squares array after every move, and treats it as immutable
     
     //The slice() method returns a shallow copy of a portion of an array into a new array object selected from begin to end (end not included) where begin and end represent the index of items in that array. The original array will not be modified.
   }
@@ -98,7 +99,7 @@ class Board extends React.Component {
     //METHOD 2, my method,  BELOW
     const status = (winner ? 'Winner ' + winner : 'Next player: ' + (this.state.xIsNext ? 'X' : 'O'));
     
-    
+    //what is actually displayed on the page
     return (
       <div>
         <div className="status">{status}</div>
@@ -122,7 +123,7 @@ class Board extends React.Component {
   }
 }
 
-//Parent - the logic of the game is here
+//Parent
 class Game extends React.Component {
   render() {
     return (
